@@ -1,6 +1,7 @@
 // https://redux-saga.js.org/docs/api/
 // https://pjchender.dev/react/redux-saga
-import { takeLatest, all, call, put } from 'redux-saga/effects';
+// import { takeLatest, all, call, put } from 'redux-saga/effects';
+import { takeLatest, all, call, put } from 'typed-redux-saga/macro';
 
 import { getCategoriesAndDoc } from '../../utils/firebase/firebase.utils';
 import { fetchCategoriesSuccess, fetchCategoriesFailure } from './category.action';
@@ -10,23 +11,23 @@ export function* fetchCategoriesAsync() {
   try {
     // call() will trigger fun
     // ex: call(fun, ...arg)
-    const categoriesArray = yield call(getCategoriesAndDoc, 'categories');
-    // put(Action) like dispatch() 
+    const categoriesArray = yield* call(getCategoriesAndDoc);
+    // put(Action) like dispatch()
     // ex: put({ type: xxx, payload: xxx })
-    yield put(fetchCategoriesSuccess(categoriesArray));
+    yield* put(fetchCategoriesSuccess(categoriesArray));
   } catch (error) {
-    yield put(fetchCategoriesFailure(error));
+    yield* put(fetchCategoriesFailure(error as Error));
   }
-};
+}
 
 export function* onFetchCategories() {
   // ex: takeLatest(pattern: string, saga: Generator func, ...args)
-  yield takeLatest(CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START, fetchCategoriesAsync)
-};
+  yield* takeLatest(CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START, fetchCategoriesAsync);
+}
 
 export function* categoriesSaga() {
   // all([...effects]) like Promise.all()
   // saga: Generator func
   // ex: all([ call(saga) ]) || all([ saga() ])
-  yield all([call(onFetchCategories)])
+  yield* all([call(onFetchCategories)]);
 }
