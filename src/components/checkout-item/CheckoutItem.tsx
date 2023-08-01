@@ -6,6 +6,7 @@ import {
   addItemToCart,
   removeItemFromCart,
 } from '../../store/cart/cart.action';
+import { CartItem } from '../../store/cart/cart.types';
 
 import {
   Arrow,
@@ -16,11 +17,14 @@ import {
   Quantity,
   RemoveButton
 } from './checkoutItem.styles';
+import { FC } from 'react';
 
 
+type CheckoutItemProps = {
+  cartItem: CartItem;
+}
 
-
-const CheckoutItem = ({ cartItem }) => {
+const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);

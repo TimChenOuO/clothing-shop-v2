@@ -23,7 +23,12 @@ export const NavLinks = styled.div`
   justify-content: flex-end;
 `;
 
-export const NavLink = styled(Link)`
+type NavLinkProps = {
+  as?: string;
+  to?: string;
+}
+
+export const NavLink = styled(Link)<NavLinkProps>`
   padding: 10px 15px;
   cursor: pointer;
 `;
